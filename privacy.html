@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAKI — Politique de confidentialité</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 32px 20px 80px;
+    line-height: 1.6; color: #1a1a2e; background: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #eae8f5; background: #0d0a1f; }
+    a { color: #9884ff; }
+    .card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+  }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  h2 { font-size: 18px; margin-top: 36px; }
+  .updated { color: #7c35e8; font-weight: 600; font-size: 14px; margin-bottom: 28px; }
+  .card {
+    border: 1px solid rgba(0,0,0,0.08); border-radius: 14px;
+    padding: 16px 18px; margin: 16px 0; background: rgba(124,53,232,0.04);
+  }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(127,127,127,0.2); vertical-align: top; }
+  th { font-weight: 700; }
+  a { color: #7c35e8; }
+  code { background: rgba(127,127,127,0.15); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>Politique de confidentialité — YAKI</h1>
+<p class="updated">Dernière mise à jour : 17 juillet 2026</p>
+
+<p>YAKI est une application mobile de carte sociale en temps réel, réservée aux personnes de 18 ans et plus. Cette page explique quelles données nous collectons, pourquoi, et comment tu peux exercer tes droits.</p>
+
+<div class="card">
+  <strong>Éditeur de l'application :</strong> Lenny Soliveres (développeur indépendant), France.<br>
+  <strong>Contact / droits RGPD :</strong> <a href="mailto:lenny.soliveres@gmail.com">lenny.soliveres@gmail.com</a>
+</div>
+
+<h2>1. Données collectées</h2>
+<table>
+  <tr><th>Donnée</th><th>Pourquoi</th></tr>
+  <tr><td>Email + mot de passe</td><td>Authentification du compte</td></tr>
+  <tr><td>Prénom, nom, date de naissance</td><td>Vérification de l'âge (18+ obligatoire) — jamais affichés publiquement</td></tr>
+  <tr><td>Username, photo de profil, bio, genre, réseaux sociaux</td><td>Profil public visible par les autres utilisateurs</td></tr>
+  <tr><td>Position géographique</td><td>Affichage sur la carte quand tu actives ta présence — arrondie (~110m), jamais ta position exacte</td></tr>
+  <tr><td>Messages, événements, invitations</td><td>Fonctionnement de la messagerie et des events</td></tr>
+  <tr><td>Signalements et actions de modération</td><td>Sécurité de la communauté</td></tr>
+</table>
+
+<h2>2. Base légale</h2>
+<p>Le traitement de tes données repose sur l'exécution du contrat qui te lie à YAKI (création et fonctionnement de ton compte) et, pour la géolocalisation, sur ton consentement explicite — tu contrôles à tout moment quand ta présence est visible ou non.</p>
+
+<h2>3. Qui a accès à tes données</h2>
+<p>Tes données ne sont jamais vendues. Elles sont hébergées et traitées par :</p>
+<ul>
+  <li><strong>Supabase</strong> (base de données, authentification, stockage) — hébergé dans l'Union Européenne (Irlande).</li>
+  <li><strong>HERE Technologies</strong> — reçoit uniquement le texte de tes recherches de lieu lors de la création d'un event (pas de donnée personnelle liée à ton compte).</li>
+</ul>
+<p>Les autres utilisateurs ne voient jamais ton email, ton nom complet ou ta date de naissance exacte — seulement ton username, ta photo, ta bio et ton âge calculé.</p>
+
+<h2>4. Durée de conservation</h2>
+<p>Tes données sont conservées tant que ton compte est actif. En cas de suppression de compte, l'ensemble de tes données (profil, photos, messages envoyés, position) est supprimé <strong>sous 30 jours</strong>.</p>
+
+<h2>5. Tes droits</h2>
+<p>Conformément au RGPD, tu peux à tout moment :</p>
+<ul>
+  <li>Accéder à tes données</li>
+  <li>Les rectifier</li>
+  <li>Demander leur suppression (aussi possible directement dans l'app : Réglages → Supprimer mon compte)</li>
+  <li>T'opposer à un traitement</li>
+</ul>
+<p>Pour exercer ces droits, écris-nous à <a href="mailto:lenny.soliveres@gmail.com">lenny.soliveres@gmail.com</a>.</p>
+
+<h2>6. Sécurité</h2>
+<p>L'accès à tes données est protégé par des règles de sécurité au niveau de la base de données (chaque utilisateur ne peut lire/modifier que ce qui le concerne, selon des règles vérifiées côté serveur). Les mots de passe ne sont jamais stockés en clair.</p>
+
+<h2>7. Mineurs</h2>
+<p>YAKI est strictement réservé aux personnes de 18 ans et plus. Tout compte dont l'âge déclaré est inférieur à 18 ans est refusé à la création.</p>
+
+<h2>8. Modifications</h2>
+<p>Cette politique peut évoluer ; la date de mise à jour en haut de page reflète la dernière version.</p>
+
+</body>
+</html>
