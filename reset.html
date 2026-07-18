@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAKI — Réinitialiser le mot de passe</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 420px; margin: 0 auto; padding: 48px 20px 80px;
+    line-height: 1.5; color: #1a1a2e; background: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #eae8f5; background: #0d0a1f; }
+    input { background: rgba(255,255,255,0.06) !important; color: #eae8f5 !important; border-color: rgba(255,255,255,0.15) !important; }
+    .card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+  }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  p.sub { color: rgba(127,127,127,0.9); font-size: 14px; margin-bottom: 28px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 6px; }
+  input {
+    width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.15); font-size: 15px; background: #fff; color: #1a1a2e;
+  }
+  button {
+    width: 100%; margin-top: 24px; padding: 13px; border: none; border-radius: 10px;
+    background: #7c35e8; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .card {
+    border: 1px solid rgba(0,0,0,0.08); border-radius: 14px;
+    padding: 16px 18px; margin: 16px 0; background: rgba(124,53,232,0.04); font-size: 14px;
+  }
+  .error { color: #e8355e; font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<h1>Nouveau mot de passe</h1>
+<p class="sub">Choisis un nouveau mot de passe pour ton compte YAKI.</p>
+
+<div id="checking" class="card">Vérification du lien…</div>
+
+<div id="invalidState" class="card hidden">
+  Ce lien de réinitialisation est invalide ou a expiré. Retourne dans l'app YAKI et refais une demande depuis « Mot de passe oublié ».
+</div>
+
+<form id="resetForm" class="hidden" onsubmit="return false;">
+  <label for="pw1">Nouveau mot de passe</label>
+  <input id="pw1" type="password" autocomplete="new-password" placeholder="8 caractères minimum" />
+  <label for="pw2">Confirme le mot de passe</label>
+  <input id="pw2" type="password" autocomplete="new-password" placeholder="Retape-le" />
+  <div id="errorMsg" class="error"></div>
+  <button id="submitBtn" type="submit">Valider le nouveau mot de passe</button>
+</form>
+
+<div id="successState" class="card hidden">
+  ✅ Mot de passe mis à jour. Tu peux retourner dans l'app YAKI et te connecter avec ton nouveau mot de passe.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  var SUPABASE_URL = 'https://dwceycwcglsrtqvkuadz.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3Y2V5Y3djZ2xzcnRxdmt1YWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTUwMzEsImV4cCI6MjA5NjA5MTAzMX0.fFw_ZAFJ2_p89DxXYwcn5N_DuluNT4LCAWcSbD5nt2w';
+  var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  var checkingEl = document.getElementById('checking');
+  var invalidEl  = document.getElementById('invalidState');
+  var formEl     = document.getElementById('resetForm');
+  var successEl  = document.getElementById('successState');
+  var errorEl    = document.getElementById('errorMsg');
+  var submitBtn  = document.getElementById('submitBtn');
+
+  function show(el) { el.classList.remove('hidden'); }
+  function hide(el) { el.classList.add('hidden'); }
+
+  var sessionReady = false;
+
+  // Le lien envoyé par Supabase pose access_token/refresh_token dans le fragment (#...) ;
+  // supabase-js les détecte automatiquement au chargement (detectSessionInUrl par défaut).
+  supabaseClient.auth.onAuthStateChange(function (event, session) {
+    if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
+      sessionReady = true;
+      hide(checkingEl);
+      show(formEl);
+    }
+  });
+
+  // Filet si l'event PASSWORD_RECOVERY n'arrive pas avant ce délai (lien déjà consommé, expiré...).
+  setTimeout(function () {
+    if (sessionReady) return;
+    supabaseClient.auth.getSession().then(function (res) {
+      if (res.data && res.data.session) {
+        sessionReady = true;
+        hide(checkingEl);
+        show(formEl);
+      } else {
+        hide(checkingEl);
+        show(invalidEl);
+      }
+    });
+  }, 2500);
+
+  formEl.addEventListener('submit', function () {
+    errorEl.textContent = '';
+    var pw1 = document.getElementById('pw1').value;
+    var pw2 = document.getElementById('pw2').value;
+
+    if (pw1.length < 8) {
+      errorEl.textContent = 'Le mot de passe doit faire au moins 8 caractères.';
+      return;
+    }
+    if (pw1 !== pw2) {
+      errorEl.textContent = 'Les deux mots de passe ne correspondent pas.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enregistrement…';
+
+    supabaseClient.auth.updateUser({ password: pw1 }).then(function (res) {
+      if (res.error) {
+        errorEl.textContent = res.error.message || 'Une erreur est survenue.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Valider le nouveau mot de passe';
+        return;
+      }
+      hide(formEl);
+      show(successEl);
+    });
+  });
+</script>
+
+</body>
+</html>
